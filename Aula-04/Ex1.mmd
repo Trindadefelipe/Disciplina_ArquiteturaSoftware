@@ -1,0 +1,22 @@
+flowchart LR
+    Company(["Empresa<br>Vende produtos por telefone ou encontros presenciais"])
+    Sellers(["Vendedores<br>Precisam do sistema para registrar pedidos"])
+    Administrators(["Administradores<br>Cadastra e remove produtos para venda"])
+    StockTeam(["Time de estoque<br>Controla a quantidade de produto disponível no estoque"])
+    
+    System["Sistema da empresa"]
+    Products(["Produtos vendidos pela empresa"])
+
+    Company -->|Vende produtos| Products
+    Sellers -->|Vende e negocia os produtos disponíveis| Products
+    Administrators -->|Gerencia produtos no sistema| System
+    StockTeam -->|Gerencia o estoque da empresa| Company
+    System -->|Informa os produtos disponiveis| Sellers
+
+    %% Estilização focada em separar atores do sistema central
+    style System fill:#1168bd,stroke:#0b4884,color:#fff,stroke-width:2px
+    style Company fill:#08427b,stroke:#052e56,color:#fff
+    style Sellers fill:#08427b,stroke:#052e56,color:#fff
+    style Administrators fill:#08427b,stroke:#052e56,color:#fff
+    style StockTeam fill:#08427b,stroke:#052e56,color:#fff
+    style Products fill:#666666,stroke:#333333,color:#fff
