@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Quiz SPA Interativo para estudo da disciplina de Arquitetura de Software - Conteúdo completo dos Slides 1 a 5.">
+  <title>Quiz de Arquitetura de Software | Simulado Interativo</title>
+  
+  <!-- Tipografia Inter do Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Estilos CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- CABEÇALHO GLOBAL -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">🏛️</div>
+        <div class="brand-info">
+          <h1>Arquitetura de Software</h1>
+          <p>Simulado de Preparação para Prova</p>
+        </div>
+      </div>
+      <div class="brand-tag">5 Slides • Banco Completo</div>
+    </header>
+
+    <main>
+      
+      <!-- ====================================================================
+           TELA 1: BOAS-VINDAS / INTRODUÇÃO (WELCOME SCREEN)
+           ==================================================================== -->
+      <section id="welcome-screen" class="spa-screen active">
+        <div class="welcome-card">
+          <div class="welcome-hero">
+            <span class="welcome-badge">🚀 Modo Estudo & Simulado</span>
+            <h2>Domine os Conceitos de Arquitetura de Software</h2>
+            <p>Teste seus conhecimentos com perguntas extraídas diretamente das aulas e slides do curso.</p>
+          </div>
+
+          <!-- Regras do Quiz em Destaque -->
+          <div class="quiz-rules-grid">
+            <div class="rule-box">
+              <div class="rule-icon">🎲</div>
+              <h4>Sorteio Rigoroso</h4>
+              <p>Exatamente <strong>10 questões</strong> sorteadas: 2 de cada um dos 5 slides a cada rodada.</p>
+            </div>
+            <div class="rule-box">
+              <div class="rule-icon">📚</div>
+              <h4>Banco de Questões</h4>
+              <p><strong id="total-questions-count">78</strong> questões exclusivas no banco para testes sempre variados.</p>
+            </div>
+            <div class="rule-box">
+              <div class="rule-icon">💡</div>
+              <h4>Revisão Pedagógica</h4>
+              <p>Ao finalizar, veja seus erros com a explicação detalhada de cada resposta correta.</p>
+            </div>
+          </div>
+
+          <!-- Visão Geral dos 5 Slides -->
+          <div class="slide-topics-section">
+            <h3>📑 Conteúdo Coberto pelos 5 Slides:</h3>
+            <div id="slide-topics-list" class="topics-grid">
+              <!-- Gerado via JavaScript -->
+            </div>
+          </div>
+
+          <div class="welcome-actions" style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+            <button id="start-quiz-btn" class="btn btn-primary btn-large">
+              Iniciar Simulado (10 Questões) ➔
+            </button>
+            <a href="Resumo_Arquitetura_Software.pdf" target="_blank" class="btn btn-secondary btn-large" style="display: inline-flex; align-items: center; gap: 8px;">
+              📄 Baixar Resumo em PDF
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TELA 2: EXECUÇÃO DO QUIZ (QUIZ SCREEN)
+           ==================================================================== -->
+      <section id="quiz-screen" class="spa-screen">
+        <div class="quiz-card">
+          
+          <!-- Cabeçalho do Quiz (Progresso e Categoria) -->
+          <div class="quiz-header">
+            <div class="quiz-meta-bar">
+              <span id="current-slide-badge" class="slide-badge slide-badge-slide-1">Slide 1</span>
+              <span id="question-progress-text" class="progress-text">Questão 1 de 10</span>
+            </div>
+            
+            <div class="progress-bar-track">
+              <div id="progress-bar-fill" class="progress-bar-fill" style="width: 10%;"></div>
+            </div>
+
+            <!-- Bolinhas de navegação rápida 1 a 10 -->
+            <div id="quick-nav" class="quick-nav-container">
+              <!-- Gerado via JavaScript -->
+            </div>
+          </div>
+
+          <!-- Enunciado da Pergunta -->
+          <div class="question-content">
+            <div id="question-topic" class="question-topic-label">Tópico da Pergunta</div>
+            <h2 id="question-text" class="question-text">Enunciado da questão será carregado aqui...</h2>
+          </div>
+
+          <!-- Alternativas A, B, C, D -->
+          <div id="options-container" class="options-list">
+            <!-- Gerado via JavaScript -->
+          </div>
+
+          <!-- Ações e Navegação -->
+          <div class="quiz-actions">
+            <button id="prev-btn" class="btn btn-secondary">
+              ← Questão Anterior
+            </button>
+            
+            <div class="shortcut-tip">
+              Dica: Use as teclas <kbd>A</kbd>, <kbd>B</kbd>, <kbd>C</kbd>, <kbd>D</kbd> ou <kbd>1</kbd>-<kbd>4</kbd> e <kbd>Enter</kbd>
+            </div>
+
+            <button id="next-btn" class="btn btn-primary">
+              Próxima Questão ➔
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TELA 3: RESULTADOS E REVISÃO DE ERROS (RESULTS SCREEN)
+           ==================================================================== -->
+      <section id="results-screen" class="spa-screen">
+        <div class="results-card">
+          
+          <!-- Placar Geral e Feedback -->
+          <div class="results-hero">
+            <div class="score-gauge-container">
+              <svg class="score-svg" viewBox="0 0 100 100">
+                <circle class="circle-bg" cx="50" cy="50" r="45"></circle>
+                <circle id="score-circle-progress" class="circle-progress" cx="50" cy="50" r="45"></circle>
+              </svg>
+              <div class="gauge-center">
+                <div id="score-text" class="gauge-score">8/10</div>
+                <div class="gauge-label">Acertos</div>
+              </div>
+            </div>
+
+            <div class="results-feedback">
+              <span id="score-percent" class="score-percent-badge">80% de aproveitamento</span>
+              <h2><span id="score-feedback-icon">🌟</span> Simulado Concluído!</h2>
+              <p id="score-message">Mensagem de feedback baseada no seu desempenho...</p>
+            </div>
+          </div>
+
+          <!-- Desempenho por Slide -->
+          <div class="slide-breakdown-section">
+            <h3>📊 Desempenho por Slide:</h3>
+            <div id="slide-breakdown-container" class="breakdown-grid">
+              <!-- Gerado via JavaScript -->
+            </div>
+          </div>
+
+          <!-- Cabeçalho da Seção de Revisão -->
+          <div class="review-section-header">
+            <h3>📝 Análise Pedagógica e Correção:</h3>
+            <div class="review-filter-tabs">
+              <button type="button" class="filter-tab active" data-view-mode="errors-only">Apenas Questões com Erro</button>
+              <button type="button" class="filter-tab" data-view-mode="all">Todas as 10 Questões</button>
+            </div>
+          </div>
+
+          <!-- Lista de Questões com Erro (ou Todas) -->
+          <div id="results-list" class="results-list">
+            <!-- Gerado via JavaScript -->
+          </div>
+
+          <!-- Ação para Refazer Quiz -->
+          <div class="results-actions">
+            <button id="restart-quiz-btn" class="btn btn-primary btn-large">
+              🔄 Refazer Quiz (Sortear 10 Novas Questões)
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- RODAPÉ GLOBAL -->
+    <footer class="app-footer">
+      <p>Disciplina de Arquitetura de Software • Baseado nos Slides do Prof. Dr. Pedro Henrique Nogueira Pizzutti</p>
+    </footer>
+
+  </div>
+
+  <!-- Scripts JavaScript -->
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
