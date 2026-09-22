@@ -26,16 +26,19 @@ public class ProductController {
     @GetMapping 
     public String read(Model model) {
         model.addAttribute("products", productService.read());
-        model.addAttribute()
+        model.addAttribute("product", new Product());
         return "products";
     }
 
-    public String read(Model model) {
-        model.addAllAttributes("products", p)
-        return "products";
+    @PostMapping
+    public String create(@ModelAttribute Product product) {
+        productService.create(product);
+        return "redirect:/products";
     }
 
-    public String create(@ModelAttribute Object product){
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable BigInteger id) {
+        productService.delete(id);
         return "redirect:/products";
     }
 }

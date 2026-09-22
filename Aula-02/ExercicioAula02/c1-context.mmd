@@ -1,0 +1,11 @@
+flowchart LR
+    Customer(["Cliente<br>navega pelo cardápio e faz pedidos"])
+    Restaurant(["Restaurante<br>gerencia cardápio e pedidos"])
+    System(["Sistema de Delivery"])
+    PaymentGateway(["Gateway de Pagamento"])
+    EmailService(["Serviço de Notificação"])
+
+    Customer -->|realiza pedido e paga| System
+    Restaurant -->|gerencia cardápio e atualiza status| System
+    System -->|processa transação| PaymentGateway
+    System -->|envia confirmação e status| EmailService

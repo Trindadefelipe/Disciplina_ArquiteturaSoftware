@@ -21,4 +21,12 @@ public class ProductService {
     public List<Product> read() {
         return productRepository.findAll();
     }
+
+    public Product findById(BigInteger id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    public void delete(BigInteger id) {
+        productRepository.deleteById(id);
+    }
 }

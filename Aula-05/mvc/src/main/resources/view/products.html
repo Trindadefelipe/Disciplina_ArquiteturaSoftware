@@ -9,6 +9,9 @@
   <body>
     <header>
       <h1>Produtos</h1>
+      <nav>
+        <a th:href="@{/}">⬅ Voltar para o Início</a>
+      </nav>
     </header>
     <main>
       <section>
@@ -16,11 +19,11 @@
         <form th:action="@{/products}" th:object="${product}" method="post">
           <div>
             <label for="name">Nome:</label>
-            <input id="name" type="text" th:field="*{name}" />
+            <input id="name" type="text" th:field="*{name}" required />
           </div>
           <div>
             <label for="price">Valor:</label>
-            <input id="price" type="number" step="0.01" th:field="*{price}" />
+            <input id="price" type="number" step="0.01" th:field="*{price}" required />
           </div>
           <button type="submit">Cadastrar</button>
         </form>
@@ -32,19 +35,28 @@
             <tr>
               <th>ID</th>
               <th>Nome</th>
-              <th>Valor</th>
+              <th>Valor (R$)</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
+            <tr th:if="${#lists.isEmpty(products)}">
+              <td colspan="4" style="text-align: center;">Nenhum produto cadastrado até o momento.</td>
+            </tr>
             <tr th:each="product : ${products}">
                 <td th:text="${product.id}"></td>
                 <td th:text="${product.name}"></td>
-                <td th:text="${product.price}"></td>
+                <td th:text="${#numbers.formatDecimal(product.price, 1, 2, 'POINT')}"></td>
+                <td>
+                  <form th:action="@{/products/delete/{id}(id=${product.id})}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</button>
+                  </form>
+                </td>
             </tr>
           </tbody>
         </table>
       </section>
     </main>
-    <footer>Porjeto de compreensão do padrão MVC</footer>
+    <footer>Projeto de compreensão do padrão MVC</footer>
   </body>
 </html>

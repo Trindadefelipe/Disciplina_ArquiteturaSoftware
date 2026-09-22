@@ -1,0 +1,16 @@
+flowchart TD
+    subgraph SA["API Backend"]
+        Catalog["Catálogo<br>lista produtos e categorias"]
+        Order["Pedido<br>cria e acompanha pedidos"]
+        Payment["Pagamento<br>processa cobranças"]
+        Notification["Notificação<br>gerencia avisos e confirmações"]
+    end
+
+    PaymentGateway["Gateway de Pagamento"]
+    EmailService["Serviço de Notificação"]
+
+    Order -->|consulta itens| Catalog
+    Order -->|solicita cobrança| Payment
+    Order -->|solicita envio de aviso| Notification
+    Payment -->|comunica com| PaymentGateway
+    Notification -->|envia mensagem via| EmailService

@@ -1,0 +1,38 @@
+classDiagram
+    class Order {
+        - id
+        - customerId
+        - totalAmount
+        - status
+        - createdAt
+        + createOrder(items)
+        + updateStatus(newStatus)
+        + cancel()
+        + calculateTotal()
+    }
+
+    class OrderItem {
+        - id
+        - productId
+        - quantity
+        - unitPrice
+        + getSubtotal()
+    }
+
+    class PaymentProcessor {
+        <<interface>>
+        + processPayment(order, paymentData)
+    }
+
+    class CreditCardProcessor {
+        + processPayment(order, paymentData)
+    }
+
+    class PaymentGatewayService {
+        + charge(amount, cardDetails)
+    }
+
+    Order "1" *-- "many" OrderItem : contém
+    Order --> PaymentProcessor : utiliza
+    CreditCardProcessor ..|> PaymentProcessor : implementa
+    CreditCardProcessor --> PaymentGatewayService : usa

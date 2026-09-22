@@ -1,0 +1,21 @@
+flowchart TD
+    Customer(["Cliente"])
+    Restaurant(["Restaurante"])
+
+    subgraph SD["Sistema de Delivery"]
+        App["App Mobile do Cliente"]
+        WebAdmin["Portal Web do Restaurante"]
+        Server["API Backend"]
+        DB[("Banco de Dados")]
+    end
+
+    PaymentGateway["Gateway de Pagamento"]
+    EmailService["Serviço de Notificação"]
+
+    Customer -->|navega e faz pedidos| App
+    Restaurant -->|gerencia cardápio e pedidos| WebAdmin
+    App -->|chama API| Server
+    WebAdmin -->|chama API| Server
+    Server -->|lê e grava| DB
+    Server -->|processa pagamento| PaymentGateway
+    Server -->|dispara notificações| EmailService
