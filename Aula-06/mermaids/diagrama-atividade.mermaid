@@ -1,0 +1,24 @@
+flowchart TD
+    Inicio(( )) --> RecebeDados[Recebe solicitação de saída: Produto e Quantidade]
+    RecebeDados --> CheckDescontinuado{Produto está<br/>DESCONTINUADO?}
+    
+    CheckDescontinuado -- [sim] --> ErroDescontinuado[Rejeitar operação:<br/>Produto descontinuado]
+    ErroDescontinuado --> FimErro(( ))
+
+    CheckDescontinuado -- [não] --> CheckEstoque{Quantidade <=<br/>Estoque disponível?}
+    
+    CheckEstoque -- [não] --> ErroEstoque[Rejeitar operação:<br/>Estoque insuficiente]
+    ErroEstoque --> FimErro
+
+    CheckEstoque -- [sim] --> SubtrairEstoque[Decrementar quantidade do estoque]
+    SubtrairEstoque --> CheckZera{Novo estoque == 0?}
+
+    CheckZera -- [sim] --> StatusIndisponivel[Alterar status para INDISPONÍVEL]
+    CheckZera -- [não] --> MantemDisponivel[Manter status como DISPONÍVEL]
+
+    StatusIndisponivel --> Salvar[Persistir produto no repositório]
+    MantemDisponivel --> Salvar
+
+    Salvar --> Sucesso[Retornar confirmação de sucesso]
+    Sucesso --> FimSucesso(( ))
+

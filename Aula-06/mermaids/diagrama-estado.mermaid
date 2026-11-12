@@ -1,0 +1,16 @@
+stateDiagram-v2
+    [*] --> INDISPONIVEL : Criar produto (estoque = 0)
+    
+    INDISPONIVEL --> DISPONIVEL : Entrada de estoque (estoque sai de 0)
+    
+    DISPONIVEL --> DISPONIVEL : Entrada ou Saída (mantendo estoque > 0)
+    
+    DISPONIVEL --> INDISPONIVEL : Saída de estoque (estoque zera = 0)
+    
+    INDISPONIVEL --> DESCONTINUADO : Descontinuar (exclusivo Administrador)
+    DISPONIVEL --> DESCONTINUADO : Descontinuar (exclusivo Administrador)
+    
+    state DESCONTINUADO {
+        [*] --> Bloqueado : Sem movimentação de estoque
+    }
+

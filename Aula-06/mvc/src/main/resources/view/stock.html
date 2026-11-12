@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <title>Estoque</title>
+    <style>
+      select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+      }
+      .alert {
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: bold;
+      }
+      .badge-disponivel {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .badge-indisponivel {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+      .badge-descontinuado {
+        background-color: #e2e3e5;
+        color: #383d41;
+      }
+      .btn-discontinue {
+        background-color: #d9534f;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Controle de Estoque</h1>
+      <nav>
+        <a th:href="@{/}">⬅ Voltar para o Início</a>
+      </nav>
+    </header>
+
+    <main>
+      <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+      <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+      <section>
+        <h2>Movimentar Estoque</h2>
+        <form method="post">
+          <div>
+            <label for="productId">Produto:</label>
+            <select id="productId" name="productId" required>
+              <option value="" disabled selected>Selecione um produto...</option>
+              <option th:each="p : ${products}" 
+                      th:value="${p.id}" 
+                      th:text="${p.name + ' (Saldo: ' + (p.quantity != null ? p.quantity : 0) + ' | ' + p.status + ')'}">
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="quantity">Quantidade:</label>
+            <input id="quantity" type="number" name="quantity" min="1" value="1" required />
+          </div>
+
+          <button type="submit" th:formaction="@{/stock/entry}" style="background-color: #28a745; color: white;">
+            Registrar Entrada
+          </button>
+          <button type="submit" th:formaction="@{/stock/exit}" style="background-color: #ffc107; color: #212529;">
+            Registrar Saída
+          </button>
+        </form>
+      </section>
+
+      <section>
+        <h2>Produtos e Saldos em Estoque</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Valor (R$)</th>
+              <th>Qtd. Estoque</th>
+              <th>Status</th>
+              <th>Ações (ADM)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:if="${#lists.isEmpty(products)}">
+              <td colspan="6" style="text-align: center;">Nenhum produto cadastrado até o momento.</td>
+            </tr>
+            <tr th:each="product : ${products}">
+              <td th:text="${product.id}"></td>
+              <td th:text="${product.name}"></td>
+              <td th:text="${#numbers.formatDecimal(product.price, 1, 2, 'POINT')}"></td>
+              <td th:text="${product.quantity != null ? product.quantity : 0}"></td>
+              <td>
+                <span th:classappend="'badge badge-' + ${#strings.toLowerCase(product.status)}"
+                      th:text="${product.status}">
+                </span>
+              </td>
+              <td>
+                <form th:if="${product.status.name() != 'DESCONTINUADO'}"
+                      th:action="@{/stock/discontinue/{id}(id=${product.id})}" 
+                      method="post" 
+                      style="display:inline;">
+                  <button type="submit" 
+                          class="btn-discontinue"
+                          onclick="return confirm('Tem certeza que deseja descontinuar este produto? Ele não poderá mais ser movimentado!')">
+                    Descontinuar
+                  </button>
+                </form>
+                <span th:if="${product.status.name() == 'DESCONTINUADO'}" style="color: #6c757d; font-size: 0.9rem;">
+                  Sem ações disponíveis
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>Projeto de compreensão do padrão MVC</footer>
+  </body>
+</html>

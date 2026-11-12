@@ -1,0 +1,48 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuário
+    participant C as StockController
+    participant S as StockService
+    participant R as ProductRepository
+    participant DB as Banco de Dados
+
+    %% Rotina de Entrada de Estoque
+    U->>C: POST /stock/entry (productId, quantity)
+    C->>S: entradaEstoque(productId, quantity)
+    S->>R: findById(productId)
+    R->>DB: SELECT * FROM product WHERE id = ?
+    DB-->>R: Product
+    R-->>S: Product
+    Note over S: Valida se não está DESCONTINUADO.<br/>Incrementa estoque (quantity += q).<br/>Se saldo anterior era 0 e novo > 0: status = DISPONIVEL.
+    S->>R: save(product)
+    R->>DB: UPDATE product SET quantity = ?, status = ?
+    DB-->>R: OK
+    R-->>S: Product
+    S-->>C: OK
+    C-->>U: Redireciona /stock (mensagem de sucesso)
+
+    %% Rotina de Saída de Estoque
+    U->>C: POST /stock/exit (productId, quantity)
+    C->>S: saidaEstoque(productId, quantity)
+    S->>R: findById(productId)
+    R->>DB: SELECT * FROM product WHERE id = ?
+    DB-->>R: Product
+    R-->>S: Product
+    alt Produto Descontinuado
+        Note over S: Lança exceção de produto descontinuado
+        S-->>C: Erro: Produto descontinuado
+        C-->>U: Exibe mensagem de erro na tela
+    else Quantidade de saída > Estoque atual
+        Note over S: Lança exceção de saldo insuficiente
+        S-->>C: Erro: Estoque insuficiente
+        C-->>U: Exibe mensagem de erro na tela
+    else Saída autorizada
+        Note over S: Decrementa estoque (quantity -= q).<br/>Se novo saldo == 0: status = INDISPONIVEL.
+        S->>R: save(product)
+        R->>DB: UPDATE product SET quantity = ?, status = ?
+        DB-->>R: OK
+        R-->>S: Product
+        S-->>C: OK
+        C-->>U: Redireciona /stock (mensagem de sucesso)
+    end
+
