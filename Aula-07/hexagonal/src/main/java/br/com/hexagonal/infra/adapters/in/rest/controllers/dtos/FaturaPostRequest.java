@@ -1,5 +1,6 @@
 package br.com.hexagonal.infra.adapters.in.rest.controllers.dtos;
 
-public class FaturaPostRequest {
-    
+import java.math.BigDecimal;
+
+public record FaturaPostRequest(Long pedidoId, BigDecimal valor) {
 }
